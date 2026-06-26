@@ -1,9 +1,19 @@
 <?php
+// Load environment variables if .env file exists
+if (file_exists(__DIR__ . '/../../.env')) {
+    $lines = file(__DIR__ . '/../../.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos(trim($line), '#') === 0) continue;
+        list($name, $value) = explode('=', $line, 2);
+        putenv(trim($name) . '=' . trim($value));
+    }
+}
+
 // Database configuration for Hostinger or Localhost
-$host = "localhost"; // Usually localhost for Hostinger too
-$db_name = "u123456789_vbg_ramg"; // Update with your Hostinger DB Name
-$username = "u123456789_user";     // Update with your Hostinger DB User
-$password = "YourStrongPassword";   // Update with your Hostinger DB Password
+$host = getenv('DB_HOST') ?: "localhost";
+$db_name = getenv('DB_NAME') ?: "u123456789_vbg_ramg";
+$username = getenv('DB_USER') ?: "u123456789_user";
+$password = getenv('DB_PASS') ?: "YourStrongPassword";
 $conn;
 
 try {

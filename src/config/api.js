@@ -2,7 +2,7 @@
 // export const BASE_URL = 'https://yourdomain.com/vbg-backend/api';
 
 // DEVELOPMENT: Your local IP address
-export const BASE_URL = 'http://192.168.1.20/VbgRamgApp/vbg-backend/api';
+export const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://192.168.1.20/VbgRamgApp/vbg-backend/api';
 
 export const API_ENDPOINTS = {
   LOGIN: `${BASE_URL}/login.php`,
