@@ -13,34 +13,59 @@ export default function FieldSupervisorLoginScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
+    console.log(">>> SUPERVISOR LOGIN BUTTON CLICKED <<<");
     if (!username || !password) {
+      console.log("Validation Failed: Empty fields");
       alert('Required: Please enter username and password.');
       return;
     }
     setLoading(true);
     try {
+      console.log("API URL:", API_ENDPOINTS.LOGIN);
       const response = await fetch(API_ENDPOINTS.LOGIN, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({ username, password, role: 'supervisor' }),
       });
-      const result = await response.json();
+      
+      console.log("HTTP Status:", response.status);
+      const responseText = await response.text();
+      console.log("Raw Response:", responseText);
+
+      let result;
+      try {
+        result = JSON.parse(responseText);
+      } catch (e) {
+        console.log("JSON Parse Error:", e);
+        alert("Server returned invalid JSON.");
+        return;
+      }
+
       if (result.status === 'success') {
+        console.log("Login Success");
         navigation.replace('SupervisorPanel');
       } else {
+        console.log("Login Failed:", result.message);
         alert(result.message || 'Login failed');
       }
     } catch (error) {
+      console.log("FETCH ERROR:", error);
       alert('Connection error: ' + error.message);
     } finally {
       setLoading(false);
+      console.log("Login process finished.");
     }
   };
 
   return (
     <MobileFrame>
       <View style={{ flex: 1, minHeight: '100%', position: 'relative' }}>
-        <BackgroundSlideshow />
+        <View style={{ ...StyleSheet.absoluteFillObject, zIndex: 0 }} pointerEvents="none">
+          <BackgroundSlideshow />
+        </View>
         
         {/* Top Navigation */}
         <View style={styles.header}>
@@ -49,7 +74,7 @@ export default function FieldSupervisorLoginScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        <View style={{ flex: 1, paddingHorizontal: 24, paddingVertical: 40, justifyContent: 'center', zIndex: 10 }}>
+        <View style={{ flex: 1, paddingHorizontal: 24, paddingVertical: 40, justifyContent: 'center', zIndex: 10, position: 'relative' }}>
           <View className="items-center mb-10">
             <Text className="text-white font-extrabold text-3xl shadow-lg">VB-G RAM-G</Text>
             <View className="h-[2px] w-12 bg-gov-green mt-2 mb-2" />

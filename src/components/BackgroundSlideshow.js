@@ -45,7 +45,7 @@ export default function BackgroundSlideshow() {
   }, [slideAnim, fadeAnim]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} pointerEvents="none">
       <Animated.Image
         source={images[currentIndex]}
         style={[
