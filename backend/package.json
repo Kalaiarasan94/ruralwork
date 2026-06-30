@@ -1,0 +1,10 @@
+{
+  "name": "vbg-backend",
+  "version": "1.0.0",
+  "description": "PHP Backend for Rural Work App",
+  "scripts": {
+    "start": "php -S localhost:8000"
+  },
+  "author": "",
+  "license": "ISC"
+}
